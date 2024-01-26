@@ -1,0 +1,23 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { YouTube } from "@astro-community/astro-embed-youtube";
+import BlogPost from "../../layouts/ArticlePage.astro";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("posts");
+
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<"posts">;
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<BlogPost {...post.data}>
+	<Content components={{ YouTube, Image }} />
+</BlogPost>

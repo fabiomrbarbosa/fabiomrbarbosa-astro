@@ -1,0 +1,210 @@
+/*
+  RESET
+	From Josh W. Comeau's blog post: https://www.joshwcomeau.com/css/custom-css-reset/
+ */
+
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+/*
+  2. Remove default margin
+*/
+* {
+	margin: 0;
+}
+/*
+  Typographic tweaks!
+  3. Add accessible line-height
+  4. Improve text rendering
+*/
+body {
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+/*
+  5. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+/*
+  6. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+/*
+  7. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+/*
+  SCREEN READER TEXT 
+*/
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+	clip: rect(1px 1px 1px 1px);
+	/* maybe deprecated but we need to support legacy browsers */
+	clip: rect(1px, 1px, 1px, 1px);
+	/* modern browsers, clip-path works inwards from each corner */
+	clip-path: inset(50%);
+	/* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
+	white-space: nowrap;
+}
+
+/*
+  COLORS
+*/
+:root {
+	--color-white: 255, 255, 255;
+	--color-offwhite: 249, 249, 249;
+	--color-gray: 164, 164, 164;
+	--color-dark-gray: 99, 99, 99;
+	--color-black: 17, 17, 17;
+	--color-petra: 0, 50, 47;
+	--color-forest: 17, 61, 64;
+	--color-emerald: 21, 162, 143;
+	--color-mint: 192, 218, 222;
+	--color-foam: 222, 237, 236;
+	--color-sand: 249, 233, 215;
+	--color-terracotta: 183, 75, 55;
+	--color-wood: 47, 23, 13;
+
+	--color-bg: rgb(var(--color-foam));
+	--color-fg: rgb(var(--color-petra));
+	--color-accent: rgb(var(--color-emerald));
+	--color-border: rgba(var(--color-forest), 0.2);
+}
+
+/*
+  TYPOGRAPHY
+*/
+
+/* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1280,22,1.25,5,2,1280&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+:root {
+	--size-step--2: clamp(0.6944rem, 0.6325rem + 0.3094vw, 0.88rem);
+	--size-step--1: clamp(0.8331rem, 0.7442rem + 0.4448vw, 1.1rem);
+	--size-step-0: clamp(1rem, 0.875rem + 0.625vw, 1.375rem);
+	--size-step-1: clamp(1.2rem, 1.0271rem + 0.8646vw, 1.7188rem);
+	--size-step-2: clamp(1.44rem, 1.2038rem + 1.1813vw, 2.1488rem);
+	--size-step-3: clamp(1.7281rem, 1.409rem + 1.5958vw, 2.6856rem);
+	--size-step-4: clamp(2.0738rem, 1.646rem + 2.1385vw, 3.3569rem);
+	--size-step-5: clamp(2.4881rem, 1.9188rem + 2.8469vw, 4.1963rem);
+	--font-family-serif: "freight-text-pro", Georgia, "Times New Roman", Times,
+		serif;
+	--font-family-sans: "freight-sans-pro", Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/*
+  BASE 
+*/
+
+html {
+	font-family: var(--font-family-sans);
+	font-size: var(--size-step-0);
+	color: var(--color-fg);
+	background-color: var(--color-bg);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-family-serif);
+}
+
+a {
+	color: var(--color-fg);
+}
+
+a:focus,
+a:hover {
+	color: var(--color-accent);
+}
+
+/*
+  GRIDS
+*/
+
+.content-grid {
+	--padding-inline: 1rem;
+	--content-max-width: 60ch;
+	--breakout-max-width: 90ch;
+
+	--breakout-size: calc(
+		(var(--breakout-max-width) - var(--content-max-width)) / 2
+	);
+
+	display: grid;
+	grid-template-columns:
+		[full-width-start] minmax(var(--padding-inline), 1fr)
+		[breakout-start] minmax(0, var(--breakout-size))
+		[content-start] min(
+			100% - (var(--padding-inline) * 2),
+			var(--content-max-width)
+		)
+		[content-end]
+		minmax(0, var(--breakout-size)) [breakout-end]
+		minmax(var(--padding-inline), 1fr) [full-width-end];
+}
+
+.content-grid > :not(.breakout, .full-width),
+.full-width > :not(.breakout, .full-width) {
+	grid-column: content;
+}
+
+.content-grid > .breakout {
+	grid-column: breakout;
+}
+
+.content-grid > .full-width {
+	grid-column: full-width;
+
+	display: grid;
+	grid-template-columns: inherit;
+}
+
+img.full-width {
+	width: 100%;
+	max-height: 45vh;
+	object-fit: cover;
+}
+
+.content-grid lite-youtube {
+	max-width: 100%;
+}
+
+.content-grid * + * {
+	margin-top: 1em;
+}
