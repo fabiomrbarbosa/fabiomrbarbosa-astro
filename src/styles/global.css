@@ -9,8 +9,10 @@
 *,
 *::before,
 *::after {
+	border: 0 solid;
 	box-sizing: border-box;
 }
+
 /*
   2. Remove default margin
 */
